@@ -1,14 +1,15 @@
 import subprocess
 import pygame
+import time
 import sys
 
 # Initialize Pygame
 pygame.init()
 
 # Screen dimensions
-SCREEN_WIDTH, SCREEN_HEIGHT = 1920, 1080
+SCREEN_WIDTH, SCREEN_HEIGHT = 1366, 768
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),
-                                 pygame.FULLSCREEN
+                                 pygame.FULLSCREEN | pygame.SCALED
                                  )
 pygame.display.set_caption('Pygame Menu Template')
 
@@ -78,9 +79,9 @@ def handle_input():
 
 def execute_option():
     if menu_options[selected_option] == "Emulation Station":
-        subprocess.run("firefox")
+        subprocess.run("es-de")
     elif menu_options[selected_option] == "Steam":
-        subprocess.run("firefox")
+        subprocess.run("steam -gamepadui")
     elif menu_options[selected_option] == "Firefox":
         subprocess.run("firefox")
     elif menu_options[selected_option] == "Exit":
@@ -99,4 +100,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
