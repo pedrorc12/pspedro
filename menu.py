@@ -1,6 +1,5 @@
 import subprocess
 import pygame
-import time
 import sys
 
 # Initialize Pygame
@@ -11,7 +10,7 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 1366, 768
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),
                                  pygame.FULLSCREEN | pygame.SCALED
                                  )
-pygame.display.set_caption('Pygame Menu Template')
+pygame.display.set_caption('Pspedro')
 
 # Colors
 WHITE = (255, 255, 255)
@@ -22,16 +21,23 @@ HIGHLIGHT = (100, 100, 255)
 font = pygame.font.Font(None, 74)
 
 # Menu options
-menu_options = ["Emulation Station", "Steam", "Firefox", "Exit"]
+menu_options = ["Emulation Station", "Steam", "Firefox", "Shutdown", "Exit"]
 selected_option = 0
 
 # Initialize joystick
-pygame.joystick.init()
-if pygame.joystick.get_count() > 0:
-    joystick = pygame.joystick.Joystick(0)
-    joystick.init()
-else:
-    joystick = None
+joystick_initialized = False
+joystick = None
+
+
+def init_joystick():
+    pygame.joystick.init()
+    print(pygame.joystick.get_count())
+    global joystick_initialized
+    global joystick
+    if pygame.joystick.get_count() > 0:
+        joystick = pygame.joystick.Joystick(0)
+        joystick.init()
+        joystick_initialized = True
 
 
 def draw_menu():
@@ -81,9 +87,11 @@ def execute_option():
     if menu_options[selected_option] == "Emulation Station":
         subprocess.run("es-de")
     elif menu_options[selected_option] == "Steam":
-        subprocess.run("steam -gamepadui")
+        subprocess.run("steam")
     elif menu_options[selected_option] == "Firefox":
         subprocess.run("firefox")
+    elif menu_options[selected_option] == "Shutdown":
+        subprocess.run("shutdown now")
     elif menu_options[selected_option] == "Exit":
         pygame.quit()
         sys.exit()
@@ -92,6 +100,8 @@ def execute_option():
 def main():
     clock = pygame.time.Clock()
     while True:
+        if not joystick_initialized:
+            init_joystick()
         handle_input()
         draw_menu()
         pygame.display.flip()
